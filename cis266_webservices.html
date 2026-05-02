@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIS 266 Web Services | Your Full Name</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .project-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+    .project-block h3 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: .4rem;
+    }
+    .project-meta {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .project-section-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin: 1.25rem 0 .4rem;
+    }
+    .code-block {
+      background: #0d1b2a;
+      color: #c9d8e8;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: .82rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin-bottom: .75rem;
+    }
+    .screenshot-placeholder {
+      background: var(--light);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: .75rem;
+    }
+    .screenshot-placeholder img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      margin: 0 auto;
+      display: block;
+    }
+    .demo-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: linear-gradient(135deg, var(--ink), var(--steel));
+      border-radius: var(--radius);
+      padding: 1.1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .demo-banner p { color: rgba(255,255,255,.8); font-size: .9rem; margin: 0; }
+    .demo-banner strong { color: var(--white); display: block; font-size: 1rem; margin-bottom: .2rem; }
+    .btn-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--accent);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: .9rem;
+      padding: .6rem 1.3rem;
+      border-radius: var(--radius);
+      white-space: nowrap;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-demo:hover { opacity: .88; color: var(--navy); transform: translateY(-1px); }
+
+    .static-notice {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--steel);
+      border-radius: var(--radius);
+      padding: .9rem 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .media-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+      background: var(--light);
+    }
+    .media-card .media-icon {
+      font-size: 2rem;
+      margin-bottom: .5rem;
+    }
+    .media-card h4 { font-size: .95rem; margin-bottom: .4rem; color: var(--ink); }
+    .media-card p  { font-size: .85rem; color: var(--muted); margin-bottom: .75rem; }
+
+    .badge-dynamic {
+      display: inline-block;
+      background: #1a4a2e; color: #6fd49a;
+      font-size: .72rem; font-weight: 700;
+      padding: .2rem .7rem; border-radius: 99px;
+      letter-spacing: .05em; margin-bottom: 1rem;
+    }
+    .badge-static {
+      display: inline-block;
+      background: #2a2a4a; color: #9999dd;
+      font-size: .72rem; font-weight: 700;
+      padding: .2rem .7rem; border-radius: 99px;
+      letter-spacing: .05em; margin-bottom: 1rem;
+    }
+    .badge-team {
+      display: inline-block;
+      background: #3a2a1a; color: #ddaa66;
+      font-size: .72rem; font-weight: 700;
+      padding: .2rem .7rem; border-radius: 99px;
+      letter-spacing: .05em; margin-bottom: 1rem; margin-left: .3rem;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 2.5rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <span class="nav-brand">Joshua Williams</span>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="CIS_Syllabi.html">CIS Syllabi</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="csharp.html">C# Projects</a></li>
+        <li><a href="cis241.html">CIS 241</a></li>
+        <li><a href="cis266_webservices.html" class="active">CIS 266</a></li>
+        <li><a href="Joshua_Williams_ResumeSupervisor.pdf" target="_blank">Resume</a></li>
+        <li><a href="https://catalog.southeasttech.edu/preview_program.php?catoid=29&poid=3606&hl=%22Computer+Programming%22&returnto=search" target="_blank">STI Curriculum</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>CIS 266 Web Services</h1>
+    <p class="subtitle">RESTful APIs | JSON | PHP | MySQL | AJAX</p>
+    <div class="accent-bar"></div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+
+    <p style="margin-bottom: 2rem;">
+      This page covers CIS 266 Web Services projects. The two dynamic projects
+      include live working demos. The two static projects include documentation, screenshots,
+      and for Scrum 4 presentation slides and demo videos.
+    </p>
+
+    <div class="project-block">
+      <span class="badge-dynamic">Dynamic</span>
+      <h3>Unit 2 - Lesson Plan 3 -AJAJ/PHP RESTful DB Web Service</h3>
+      <p class="project-meta">CIS 266 | Unit 2 | Individual Project</p>
+
+      <div class="demo-banner">
+        <div>
+          <strong>Live Demo</strong>
+          <p>RESTful web service. AJAX calls and updates the page without reloading.</p>
+        </div>
+        <a href="http://joshwil.ct.ws/unit2_ex3/wilj_unit2_ex3/ServiceClient/wilj_Records_Client.html" target="_blank" class="btn-demo">
+          Launch Demo
+        </a>
+      </div>
+
+      <div class="project-section-label">Description</div>
+      <p>
+        This assignment had us building a RESTful web service using PHP and MySQL where the frontend communicates with the 
+        backend through asynchronous JavaScript instead of traditional form submissions. We converted an existing web app 
+        into a service provider and client structure, creating separate endpoints to retrieve a single record or all records 
+        from the database. The service included dedicated testers to verify that everything worked correctly and handled errors properly.
+      </p>
+
+      <div class="project-section-label">Screenshots</div>
+      <div class="screenshot-placeholder">
+          <img src="screenshots/AJAX1.png" alt="Unit2 Ex3" />
+          <img src="screenshots/AJAX2.png" alt="Unit2 Ex3" />
+          <img src="screenshots/AJAX3.png" alt="Unit2 Ex3" />
+      </div>
+
+      <div class="project-section-label">Sample Code</div>
+      <pre class="code-block">
+<?php
+include('class_lib/wiljDB_Access.php');
+
+$DB_Access = new wiljDB_Access();
+
+$table = $_REQUEST['tableName'];
+
+$DB_Result = $DB_Access->displayRecords($table);
+
+$data = array();
+
+while($row = $DB_Result->fetch_assoc()) {
+    $rValue = "";
+    foreach($row as $value) {
+        $rValue = $rValue . "$value ";
+    }
+    $data[] = $rValue;
+}
+
+print(json_encode($data));
+?>
+      </pre>
+
+      <div class="project-section-label">Sample Code - AJAX Client</div>
+      <pre class="code-block">
+$('#target').submit(function(event) {
+
+    event.preventDefault();
+
+    var aTableName = $('#tableName').val();
+
+    $.ajax({
+        type: 'GET',
+        url: 'ServiceProvider/wilj_Records_API.php',
+        data: 'tableName=' + aTableName,
+        dataType: 'json',
+        encode: true
+    })
+    .done(function(data) {
+        var length = data.length;
+        var records = "Records returned: " + length + "<br />";
+        for (i = 0; i < length; i++) {
+            records += data[i] + "<br>";
+        }
+        $('#aMessage').html(records);
+    })
+    .fail(function() {
+        $('#aMessage').text('An error occurred. Please try again.');
+    });
+
+});
+      </pre>
+    </div>
+
+    <hr class="section-divider" />
+
+    <div class="project-block">
+      <span class="badge-dynamic">Dynamic</span>
+      <span class="badge-team">Team Project</span>
+      <h3>Scrum 3 Team Project - CRUD RESTful Web Service</h3>
+      <p class="project-meta">CIS 266 | Scrum 3 | Team Project</p>
+
+      <div class="demo-banner">
+        <div>
+          <strong>Live Demo</strong>
+          <p>Full CRUD operations (Create, Read, Update, Delete) running a live MySQL database.</p>
+        </div>
+        <a href="http://joshwil.ct.ws/scrum3/Client_3/index.html" target="_blank" class="btn-demo">
+          Launch Demo
+        </a>
+      </div>
+
+      <div class="project-section-label">Description</div>
+      <p>
+        This project is a web application built for a foundation repair company that manages customers, 
+        jobs, and services. The app uses a PHP/MySQL backend with a fully functional RESTful API that supports 
+        all four CRUD operations - creating, reading, updating, and deleting records.
+      </p>
+
+      <div class="project-section-label">Screenshots</div>
+      <div class="screenshot-placeholder">
+          <img src="screenshots/Scrum3_1.png" alt="Scrum 3 project screenshot" />
+          <img src="screenshots/Scrum3_2.png" alt="Scrum 3 project screenshot" />
+          <img src="screenshots/Scrum3_3.png" alt="Scrum 3 project screenshot" />
+      </div>
+
+      <div class="project-section-label">Sample Code - CRUD REST Service</div>
+      <pre class="code-block">
+<?php
+header("Content-Type: application/json");
+require_once "../classes/Customer.php";
+
+$customer = new Customer();
+$method = $_SERVER['REQUEST_METHOD'];
+
+switch ($method) {
+    case 'GET':
+        if (isset($_GET['id'])) {
+            echo json_encode($customer->getCustomer($_GET['id']));
+        } else {
+            echo json_encode($customer->getAllCustomers());
+        }
+        break;
+
+    case 'POST':
+        $data = json_decode(file_get_contents("php://input"), true);
+        $result = $customer->insertCustomer(
+            $data['first_name'], $data['last_name'],
+            $data['phone'], $data['email'], $data['city']
+        );
+        echo json_encode(["success" => $result]);
+        break;
+
+    case 'PUT':
+        $data = json_decode(file_get_contents("php://input"), true);
+        $result = $customer->updateCustomer(
+            $data['customer_id'], $data['first_name'], $data['last_name'],
+            $data['phone'], $data['email'], $data['city']
+        );
+        echo json_encode(["success" => $result]);
+        break;
+
+    case 'DELETE':
+        parse_str($_SERVER['QUERY_STRING'], $params);
+        $result = $customer->deleteCustomer($params['id']);
+        echo json_encode(["success" => $result]);
+        break;
+}
+?>
+      </pre>
+    </div>
+
+    <hr class="section-divider" />
+
+    <div class="project-block">
+      <span class="badge-static">Static</span>
+      <h3>Unit 3 - WCF Project</h3>
+      <p class="project-meta">CIS 266 | Unit 3 | Individual Project</p>
+
+      <div class="project-section-label">Description</div>
+      <p>
+        The WCF Calculator Service is a Windows Communication Foundation application that exposes four mathematical operations 
+        Add, Subtract, Multiply, and Divide as a SOAP-based web service. A separate C# console client connects to the service 
+        and calls each operation, including a dividing by zero error handling test.
+      </p>
+
+      <div class="project-section-label">Screenshots</div>
+      <div class="screenshot-placeholder">
+          <img src="screenshots/WCF.png" alt="WCF Service" />
+      </div>
+      <div class="project-section-label">Sample Code - WCF Service Interface</div>
+      <pre class="code-block">
+[ServiceContract]
+public interface ICalculatorService
+{
+    [OperationContract]
+    double Add(double a, double b);
+
+    [OperationContract]
+    double Subtract(double a, double b);
+
+    [OperationContract]
+    double Multiply(double a, double b);
+
+    [OperationContract]
+    double Divide(double a, double b);
+}
+
+public class CalculatorService : ICalculatorService
+{
+    public double Add(double a, double b)      { return a + b; }
+    public double Subtract(double a, double b) { return a - b; }
+    public double Multiply(double a, double b) { return a * b; }
+    public double Divide(double a, double b)
+    {
+        if (b == 0)
+            throw new DivideByZeroException("Cannot divide by zero.");
+        return a / b;
+    }
+}
+      </pre>
+      <pre class="code-block">
+CalculatorServiceClient client = new CalculatorServiceClient();
+
+double a = 10;
+double b = 3;
+
+Console.WriteLine($"{a} + {b} = {client.Add(a, b)}");
+Console.WriteLine($"{a} - {b} = {client.Subtract(a, b)}");
+Console.WriteLine($"{a} * {b} = {client.Multiply(a, b)}");
+Console.WriteLine($"{a} / {b} = {client.Divide(a, b)}");
+
+client.Close();
+      </pre>
+    </div>
+
+    <hr class="section-divider" />
+
+    <div class="project-block">
+      <span class="badge-static">Static</span>
+      <span class="badge-team">Team Project</span>
+      <h3>Scrum 4 Team Project - Presentation - Demo Video</h3>
+      <p class="project-meta">CIS 266 | Scrum 4 | Team Project</p>
+
+      <div class="project-section-label">Description</div>
+      <p>
+        The Scrum 4 project is a real time live polling application that lets users vote on their favorite programming language. 
+        It uses Node.js and Socket.io on the backend so every vote instantly updates the results for all connected users without 
+        refreshing the page. The app includes animated progress bars, a thirty second countdown timer, and a reset function to restart 
+        the poll.
+      </p>
+      <p>
+        <strong>Team Members:</strong>
+        Joshua Williams and Jenn Woldt
+      </p>
+
+      <div class="project-section-label">Presentation Materials</div>
+      <div class="media-grid">
+
+        <div class="media-card">
+          <div class="media-icon">&#128196;</div>
+          <h4>Presentation Slides</h4>
+          <p>Scrum 4 team presentation.</p>
+          <a href="scrum4/VotingPres.pdf" target="_blank" class="btn btn-primary">
+            Open Slides (PDF)
+          </a>
+        </div>
+
+        <div class="media-card">
+          <div class="media-icon">&#127909;</div>
+          <h4>Demo Video</h4>
+          <p>Recorded Scrum 4 project.</p>
+          <a href="https://stc.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=96eca836-6e27-4531-a1d4-b43e0072f388" target="_blank" class="btn btn-primary">
+            Watch Demo Video
+          </a>
+        </div>
+
+      </div>
+
+      <div class="project-section-label">Screenshots</div>
+      <div class="screenshot-placeholder">
+          <img src="screenshots/Scrum4_1.png" alt="Scrum 4 project" />
+          <img src="screenshots/Scrum4_2.png" alt="Scrum 4 project" />
+          <img src="screenshots/Scrum4_3.png" alt="Scrum 4 project" />
+      </div>
+
+      <div class="project-section-label">Sample Code - Server side</div>
+      <pre class="code-block">
+io.on('connection', (socket) => {
+    socket.emit('updateResults', votes);
+
+    socket.on('vote', (choice) => {
+        if (votes.hasOwnProperty(choice)) {
+            votes[choice]++;
+            io.emit('updateResults', votes);
+        }
+    });
+
+    socket.on('resetPoll', () => {
+        for (let key in votes) votes[key] = 0;
+        io.emit('updateResults', votes);
+        io.emit('pollReset');
+    });
+});
+      </pre>
+
+      <div class="project-section-label">Sample Code - Client side</div>
+      <pre class="code-block">
+function castVote(choice) {
+    if (hasVoted || !votingOpen) return;
+    socket.emit('vote', choice);
+    hasVoted = true;
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent.includes(choice)) btn.classList.add('voted');
+    });
+    setStatus(`You voted for ${choice}!`);
+}
+
+socket.on('updateResults', (votes) => {
+    const total = Object.values(votes).reduce((a, b) => a + b, 0);
+    options.forEach((opt, i) => {
+        const count = votes[opt] || 0;
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        document.getElementById(`bar-${i}`).style.width = pct + '%';
+        document.getElementById(`pct-${i}`).textContent = `${pct}% (${count})`;
+    });
+});
+      </pre>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Joshua Williams - Southeast Technical Institute - CIS Portfolio</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Joshua Williams</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .project-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+    .project-block h3 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: .4rem;
+    }
+    .project-meta {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .project-section-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin: 1.25rem 0 .4rem;
+    }
+    .code-block {
+      background: #0d1b2a;
+      color: #c9d8e8;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: .82rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin-bottom: .75rem;
+    }
+    .screenshot-placeholder {
+      background: var(--light);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: .75rem;
+    }
+    .screenshot-placeholder img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      margin: 0 auto;
+      display: block;
+    }
+    .csharp-badge {
+      display: inline-block;
+      background: var(--navy);
+      color: #9fd6ff;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .2rem .7rem;
+      border-radius: 99px;
+      letter-spacing: .04em;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <span class="nav-brand">Joshua Williams</span>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="CIS_Syllabi.html">CIS Syllabi</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="csharp.html" class="active">C# Projects</a></li>
+        <li><a href="cis241.html">CIS 241</a></li>
+        <li><a href="cis266_webservices.html">CIS 266</a></li>
+        <li><a href="Joshua_Williams_ResumeSupervisor.pdf" target="_blank">Resume</a></li>
+        <li><a href="https://catalog.southeasttech.edu/preview_program.php?catoid=29&poid=3606&hl=%22Computer+Programming%22&returnto=search" target="_blank">STI Curriculum</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>C# Projects</h1>
+    <p class="subtitle">CIS 296 - Advanced MS Web Development</p>
+    <div class="accent-bar"></div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+
+    <p style="margin-bottom:2rem;">
+      The projects below were completed as part of CIS 296 (Advanced MS Web Development).
+      Each has a description of what was built, screenshots of the application, and
+      sample code from the project.
+    </p>
+
+    <!-- Project 1 -->
+    <div class="project-block">
+      <span class="csharp-badge">C# / ASP.NET</span>
+      <h3>Case Study</h3>
+      <div class="project-section-label">Description</div>
+      <p>
+        SportsPro is a web application built for a sports software company to help them manage 
+        their customer support operations. It lets admins keep track of customers, products, and technicians, 
+        while also allowing customers to register the products they own. When something goes wrong, support incidents 
+        can be opened and assigned to technicians to resolve.
+      </p>
+      <div class="project-section-label">Screenshots</div>
+      <div class="screenshot-placeholder">
+        <img src="screenshots/CaseStudy1.png" alt="Case Study screenshot" />
+        <img src="screenshots/CaseStudy2.png" alt="Case Study screenshot" />
+      </div>
+
+      <div class="project-section-label">Sample Code</div>
+      <pre class="code-block">
+using SportsPro.Models;
+
+namespace SportsPro.DataLayer
+{
+    public interface IUnitOfWork
+    {
+        Repository<Product> Products { get; }
+        Repository<Technician> Technicians { get; }
+        Repository<Customer> Customers { get; }
+        Repository<Incident> Incidents { get; }
+        Repository<Country> Countries { get; }
+        Repository<Registration> Registrations { get; }
+
+        void Save();
+    }
+}     </pre>
+      <pre class="code-block">
+using Microsoft.AspNetCore.Mvc;
+using SportsPro.DataLayer;
+using SportsPro.Models;
+
+namespace SportsPro.Controllers
+{
+    public class TechIncidentController : Controller
+    {
+        private readonly IUnitOfWork _data;
+
+        public TechIncidentController(IUnitOfWork data)
+        {
+            _data = data;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var techOptions = new QueryOptions<Technician>
+            {
+                OrderBy = t => t.Name
+            };
+
+            ViewBag.Technicians = _data.Technicians.List(techOptions);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Get(int technicianId)
+        {
+            if (technicianId == 0)
+            {
+                var techOptions = new QueryOptions<Technician>
+                {
+                    OrderBy = t => t.Name
+                };
+
+                ViewBag.Technicians = _data.Technicians.List(techOptions);
+                ViewBag.ErrorMessage = "Please select a technician.";
+                return View();
+            }
+
+            HttpContext.Session.SetInt32("TechnicianId", technicianId);
+            return RedirectToAction("List");
+        }
+
+        [HttpGet]
+        public IActionResult List()
+        {
+            int? techId = HttpContext.Session.GetInt32("TechnicianId");
+
+            if (techId == null)
+            {
+                return RedirectToAction("Get");
+            }
+
+            var technician = _data.Technicians.Get(techId.Value);
+
+            var incidentOptions = new QueryOptions<Incident>
+            {
+                Includes = "Customer,Product",
+                Where = i => i.TechnicianID == techId.Value,
+                Where2 = i => i.DateClosed == null
+            };
+
+            var incidents = _data.Incidents.List(incidentOptions);
+
+            ViewBag.Technician = technician;
+            return View(incidents);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var options = new QueryOptions<Incident>
+            {
+                Includes = "Technician,Customer,Product",
+                Where = i => i.IncidentID == id
+            };
+
+            var incident = _data.Incidents.Get(options);
+            return View(incident);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Incident incident)
+        {
+            if (ModelState.IsValid)
+            {
+                _data.Incidents.Update(incident);
+                _data.Save();
+                return RedirectToAction("List");
+            }
+
+            var options = new QueryOptions<Incident>
+            {
+                Includes = "Technician,Customer,Product",
+                Where = i => i.IncidentID == incident.IncidentID
+            };
+
+            var currentIncident = _data.Incidents.Get(options);
+            return View(currentIncident);
+        }
+
+        public IActionResult Switch()
+        {
+            HttpContext.Session.Remove("TechnicianId");
+            return RedirectToAction("Get");
+        }
+    }
+}     </pre>
+
+    </div>
+    <!-- End Project 1 -->
+
+    <!-- Project 2 -->
+      <div class="project-block">
+        <span class="csharp-badge">C# / .NET</span>
+        <h3>Quarterly Sales Application</h3>
+
+        <div class="project-section-label">Description</div>
+        <p>
+          This web application displays quarterly sales data on the home page with a dropdown to filter results by employee, 
+          and includes separate pages for adding new employees and sales records. Employee entries require valid first name, 
+          last name, date of birth, date of hire, and manager, preventing duplicate employee records. Sales entries require a 
+          valid quarter between 1 and 4, a year after 2000, a positive amount, and must not duplicate an existing entries.
+        </p>
+
+        <div class="project-section-label">Screenshots</div>
+        <div class="screenshot-placeholder">
+          <img src="screenshots/QuarterlySalesApp1.png" alt="Quarterly Sales Application" />
+          <img src="screenshots/QuarterlySalesApp2.png" alt="Quarterly Sales Application" />
+          <img src="screenshots/QuarterlySalesApp3.png" alt="Quarterly Sales Application" />
+        </div>
+
+        <div class="project-section-label">Sample Code</div>
+        <pre class="code-block">
+using System.ComponentModel.DataAnnotations;
+
+namespace QuarterlySales.Models
+{
+    public class Sales
+    {
+        public int SalesId { get; set; }
+
+        [Required]
+        public int Quarter { get; set; }
+
+        [Required]
+        public int Year { get; set; }
+
+        [Required]
+        public decimal Amount { get; set; }
+
+        [Required]
+        public int EmployeeId { get; set; }
+
+        public Employee? Employee { get; set; }
+    }
+}
+        </pre>
+        <pre class="code-block">
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using QuarterlySales.Data;
+using QuarterlySales.Models;
+using QuarterlySales.ViewModels;
+
+namespace QuarterlySales.Controllers
+{
+    public class SalesController : Controller
+    {
+        private readonly QuarterlySalesContext _context;
+
+        public SalesController(QuarterlySalesContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public IActionResult Add()
+        {
+            LoadEmployees();
+            return View(new SalesViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Add(SalesViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                LoadEmployees();
+                return View(vm);
+            }
+
+            var sales = new Sales
+            {
+                Quarter    = vm.Quarter,
+                Year       = vm.Year,
+                Amount     = vm.Amount,
+                EmployeeId = vm.EmployeeId
+            };
+
+            _context.Sales.Add(sales);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        private void LoadEmployees()
+        {
+            var employees = _context.Employees.OrderBy(e => e.Lastname).ToList();
+            ViewBag.Employees = new SelectList(employees, "EmployeeId", "FullName");
+        }
+    }
+}
+        </pre>
+      </div>
+    <!-- End Project 2 -->
+    <!-- Project 3 -->
+      <div class="project-block">
+        <span class="csharp-badge">C# / .NET</span>
+        <h3>Price Quotation</h3>
+
+        <div class="project-section-label">Description</div>
+        <p>
+          Using Bootstrap for styling, this web application allows users to select a product, 
+          enter a quantity, and receive a price quote.
+        </p>
+
+        <div class="project-section-label">Screenshots</div>
+        <div class="screenshot-placeholder">
+          <img src="screenshots/PriceQuotation.png" alt="Price Quotation Application" />
+          <img src="screenshots/PriceQuotation2.png" alt="Price Quotation Application" />
+        </div>
+
+        <div class="project-section-label">Sample Code</div>
+        <pre class="code-block">
+using System.ComponentModel.DataAnnotations;
+
+namespace PriceQuotation.Models
+{
+    public class Quotation
+    {
+        [Required(ErrorMessage = "Please enter a sale price.")]
+        [Range(0, 100000000, ErrorMessage = "Sale price must be greater than zero.")]
+        public double? Subtotal { get; set; }
+
+        [Required(ErrorMessage = "Please enter a discount percent.")]
+        [Range(0, 100, ErrorMessage = "Discount percent must be between 0 and 100.")]
+        public double? DiscountPercent { get; set; }
+
+        public double CalculateDiscount()
+        {
+            if (Subtotal.HasValue && DiscountPercent.HasValue)
+            {
+                return Subtotal.Value * (DiscountPercent.Value / 100);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public double CalculateTotal()
+        {
+            if (Subtotal.HasValue)
+            {
+                double discount = CalculateDiscount();
+                return Subtotal.Value - discount;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+}
+        </pre>
+        <pre class="code-block">
+          using Microsoft.AspNetCore.Mvc;
+using PriceQuotation.Models;
+
+namespace PriceQuotation.Controllers
+{
+    public class HomeController : Controller
+    {
+        [HttpGet]
+        public IActionResult Index()
+        {
+            ViewBag.Discount = 0;
+            ViewBag.Total = 0;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(Quotation quote)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewBag.Discount = quote.CalculateDiscount();
+                ViewBag.Total = quote.CalculateTotal();
+            }
+            else
+            {
+                ViewBag.Discount = 0;
+                ViewBag.Total = 0;
+            }
+            return View(quote);
+        }
+    }
+}
+        </pre>
+      </div>
+    <!-- End Project 3 -->
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Joshua Williams - Southeast Technical Institute - CIS Portfolio</p>
+  </footer>
+
+</body>
+</html>

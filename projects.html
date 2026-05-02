@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Joshua Williams</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .project-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+    .project-block h3 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: .4rem;
+    }
+    .project-meta {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .project-section-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin: 1.25rem 0 .4rem;
+    }
+    .code-block {
+      background: #0d1b2a;
+      color: #c9d8e8;
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: .82rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin-bottom: .75rem;
+    }
+    .screenshot-placeholder {
+      background: var(--light);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: .75rem;
+    }
+    .screenshot-placeholder img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      margin: 0 auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <span class="nav-brand">Joshua Williams</span>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="CIS_Syllabi.html">CIS Syllabi</a></li>
+        <li><a href="projects.html" class="active">Projects</a></li>
+        <li><a href="csharp.html">C# Projects</a></li>
+        <li><a href="cis241.html">CIS 241</a></li>
+        <li><a href="cis266_webservices.html">CIS 266</a></li>
+        <li><a href="Joshua_Williams_ResumeSupervisor.pdf" target="_blank">Resume</a></li>
+        <li><a href="https://catalog.southeasttech.edu/preview_program.php?catoid=29&poid=3606&hl=%22Computer+Programming%22&returnto=search" target="_blank">STI Curriculum</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1>Advanced Projects</h1>
+    <p class="subtitle">Project documentation, screenshots, and sample code</p>
+    <div class="accent-bar"></div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <p style="margin-bottom:2rem;">
+      Below are representative samples from advanced coursework. Each project includes a
+      description, screen captures, and relevant code samples.
+    </p>
+
+    <!-- Project 1 -->
+    <div class="project-block">
+      <h3>Blazor Task Manager</h3>
+      <p class="project-meta">Course: CIS 293</p>
+
+      <div class="project-section-label">Description</div>
+      <p>
+        <!-- Replace with your actual project description -->
+        This project is a task management web application built with Blazor. 
+        It allows users to create, edit, and track their daily tasks with features like due dates, priority levels, 
+        and completion status. The app uses Entity Framework Core for data access and follows the MVC architectural pattern.
+      </p>
+
+      <div class="project-section-label">Screenshots</div>
+      <div class="screenshot-placeholder">
+          <img src="screenshots/TaskManager1.png" alt="Task Manager - Home Screen" />
+          <img src="screenshots/TaskManager2.png" alt="Task Manager - Task List" />
+       </div>
+
+      <div class="project-section-label">Sample Code</div>
+      <pre class="code-block">
+using System.ComponentModel.DataAnnotations;
+
+namespace TaskManagerApp.Models
+{
+    public class TaskItem
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Title is required")]
+        [StringLength(100, ErrorMessage = "Title can't be longer than 100 characters")]
+        public string Title { get; set; } = string.Empty;
+
+        public string? Description { get; set; }
+
+        [Required(ErrorMessage = "Due date is required")]
+        public DateTime DueDate { get; set; } = DateTime.Today.AddDays(1);
+
+        public PriorityLevel Priority { get; set; } = PriorityLevel.Medium;
+
+        public bool IsCompleted { get; set; } = false;
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    }
+
+    public enum PriorityLevel
+    {
+        Low,
+        Medium,
+        High
+    }
+}
+      </pre>
+      <pre class="code-block">
+using Microsoft.EntityFrameworkCore;
+using TaskManagerApp.Data;
+using TaskManagerApp.Models;
+
+namespace TaskManagerApp.Data
+{
+    public class TaskService
+    {
+        private readonly AppDbContext _context;
+
+        public TaskService(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<TaskItem>> GetAllTasksAsync()
+        {
+            return await _context.Tasks.OrderBy(t => t.DueDate).ToListAsync();
+        }
+
+        public async Task<TaskItem?> GetTaskByIdAsync(int id)
+        {
+            return await _context.Tasks.FindAsync(id);
+        }
+
+        public async Task AddTaskAsync(TaskItem task)
+        {
+            _context.Tasks.Add(task);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTaskAsync(TaskItem task)
+        {
+            _context.Tasks.Update(task);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTaskAsync(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+            if (task != null)
+            {
+                _context.Tasks.Remove(task);
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task ToggleCompleteAsync(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+            if (task != null)
+            {
+                task.IsCompleted = !task.IsCompleted;
+                await _context.SaveChangesAsync();
+            }
+        }
+    }
+}
+      </pre>
+    </div>
+    <!-- End Project 1 -->
+
+    <!-- Project 2 -->
+      <div class="project-block">
+        <h3>Python Payroll Application</h3>
+        <p class="project-meta">Course: CIS 293</p>
+
+        <div class="project-section-label">Description</div>
+        <p>A simple Python application for managing employee payroll information.</p>
+
+        <div class="project-section-label">Screenshots</div>
+        <div class="screenshot-placeholder">
+          <img src="screenshots/PPA1.png" alt="Python Payroll Application" />
+          <img src="screenshots/PPA2.png" alt="Python Payroll Application" />
+          <img src="screenshots/PPA3.png" alt="Python Payroll Application" />
+          <img src="screenshots/PPA4.png" alt="Python Payroll Application" />
+        </div>
+
+        <div class="project-section-label">Sample Code</div>
+        <pre class="code-block">
+          class Employee:
+    def __init__(self, name, rate):
+        self.name = name
+        self.hourly_rate = rate
+        self.hours_worked = 0
+
+    def calculate_pay(self):
+        return self.hourly_rate * self.hours_worked
+        </pre>
+        <pre class="code-block">
+    def add_employee(self):
+        name = simpledialog.askstring("Add", "Employee Name:")
+        if not name:
+            return
+        rate = simpledialog.askfloat("Add", f"Hourly Rate for {name}:")
+        if rate is None:
+            return
+        Company.employees.append(Employee(name, rate))
+        self.update_listbox()
+        messagebox.showinfo("Added", f"{name} added!")
+
+    def update_employee(self):
+        sel = self.listbox.curselection()
+        if not sel:
+            messagebox.showwarning("Select", "Select an employee first")
+            return
+        emp = Company.employees[sel[0]]
+        rate = simpledialog.askfloat("Update", f"New rate for {emp.name}:")
+        if rate is None:
+            return
+        emp.hourly_rate = rate
+        self.update_listbox()
+        messagebox.showinfo("Updated", f"{emp.name}'s rate updated.")
+        </pre>
+      </div>
+      <!-- End Project 2 -->
+
+    <!-- Project 3 -->
+      <div class="project-block">
+        <h3>Trivia Game</h3>
+        <p class="project-meta">Course: CIS 293</p>
+
+        <div class="project-section-label">Description</div>
+        <p>
+          This project is a trivia game web application built with ASP.NET Core MVC and Entity Framework Core. 
+          Players take turns on a single computer answering randomized multiple choice questions under a countdown timer, 
+          earning points for each correct answer. After all players finish their questions a leaderboard displays the final rankings 
+          by score with average answer time used as a tiebreaker.
+        </p>
+
+        <div class="project-section-label">Screenshots</div>
+        <div class="screenshot-placeholder">
+          <img src="screenshots/TG1.png" alt="Trivia Game" />
+          <img src="screenshots/TG2.png" alt="Trivia Game" />
+          <img src="screenshots/TG3.png" alt="Trivia Game" />
+          <img src="screenshots/TG4.png" alt="Trivia Game" />
+        </div>
+
+        <div class="project-section-label">Sample Code</div>
+        <pre class="code-block">
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> AddQuestion(int quizId, string questionText,
+    string answerA, string answerB, string answerC, string answerD,
+    string correctAnswer, int points, int timeLimitSeconds)
+{
+    var quiz = await _context.Quizzes.FirstOrDefaultAsync(q => q.Id == quizId);
+
+    if (quiz == null)
+    {
+        return NotFound();
+    }
+
+    if (string.IsNullOrWhiteSpace(questionText) ||
+        string.IsNullOrWhiteSpace(answerA) ||
+        string.IsNullOrWhiteSpace(answerB) ||
+        string.IsNullOrWhiteSpace(answerC) ||
+        string.IsNullOrWhiteSpace(answerD) ||
+        string.IsNullOrWhiteSpace(correctAnswer))
+    {
+        TempData["Error"] = "All fields are required.";
+        return RedirectToAction(nameof(Edit), new { id = quizId });
+    }
+
+    var question = new Question
+    {
+        QuizId = quizId,
+        QuestionText = questionText.Trim(),
+        AnswerA = answerA.Trim(),
+        AnswerB = answerB.Trim(),
+        AnswerC = answerC.Trim(),
+        AnswerD = answerD.Trim(),
+        CorrectAnswer = correctAnswer.Trim().ToUpper(),
+        Points = points,
+        TimeLimitSeconds = timeLimitSeconds
+    };
+
+    _context.Questions.Add(question);
+    await _context.SaveChangesAsync();
+
+    TempData["Success"] = "Question added.";
+    return RedirectToAction(nameof(Edit), new { id = quizId });
+}
+        </pre>
+        <pre class="code-block">
+          const timeLimit = @Model.TimeLimitSeconds;
+const startTime = Date.now();
+let timerInterval;
+
+const timerDisplay = document.getElementById('timerDisplay');
+const timerBar = document.getElementById('timerBar');
+const timeTakenInput = document.getElementById('timeTakenSeconds');
+const form = document.getElementById('answerForm');
+
+timerInterval = setInterval(() => {
+    const elapsed = (Date.now() - startTime) / 1000;
+    const remaining = Math.max(timeLimit - elapsed, 0);
+    const percent = (remaining / timeLimit) * 100;
+
+    timerDisplay.textContent = Math.ceil(remaining);
+    timerBar.style.width = percent + '%';
+
+    if (remaining <= 0) {
+        clearInterval(timerInterval);
+        timeTakenInput.value = timeLimit;
+        form.submit();
+    }
+}, 250);
+
+form.addEventListener('submit', function () {
+    clearInterval(timerInterval);
+    const elapsed = (Date.now() - startTime) / 1000;
+    timeTakenInput.value = Math.min(Math.round(elapsed * 10) / 10, timeLimit);
+});
+        </pre>
+      </div>
+    <!-- End Project 3 -->
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Joshua Williams - Southeast Technical Institute - CIS Portfolio</p>
+  </footer>
+</body>
+</html>
